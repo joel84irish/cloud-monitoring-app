@@ -1,24 +1,31 @@
-# GitHub Actions CI/CD Pipeline for Deploying a cloud-monitoring-app to Amazon ECS
+# CI/CD Pipeline for Deploying a cloud-monitoring-app to Amazon ECS, with Terraform and GitHub Actions 
 
-### Workflow OverviewThis CI/CD workflow workflow includes steps for checking out code, logging into the ECR repository, building and pushing Docker images, and deploying to ECS, with a fully automated workflow.
+### This CI/CD workflow workflow includes steps for Terraform to deploy infastructure onto AWS such as VPC, subnets, Application load balncer, ECS cluster, task definition and service. Steps to check out the code, log into the ECR repository, build and push updated Docker images to ECR, then deploy the containerised application onto ECS, with a fully automated workflow.
 
-I incoperated key aspects of modern DevOps practices, including:
+We'll leverage AWS Elastic Container Registry (ECR) to store our Docker images, Amazon Elastic Container Service (ECS) to deploy our containerized website and Terraform as our infrastructure-as-code tool.I
 
-- Streamlined Build and Deployment: Leveraging GitHub Actions to automate the build, test, and deployment process ensures consistency and reduces manual intervention.
-- AWS Integration: Configuring AWS credentials securely and deploying to Amazon ECS using task definitions allows for scalable, fault-tolerant applications.
+incoperated key aspects of modern DevOps practices, including:
+- Terraform allows me to maintain and version control my infrastructure configuration, enabling consistent and repeatable deployments.
+- Continuous Integration and Continuous Deployment (CI/CD): The GitHub Actions workflow automates the build, test, and deployment processes, ensuring a smooth and efficient delivery pipeline. 
+- Scalability and High Availability: Amazon ECS allows you to scale your containerized applications horizontally and deploy them across multiple Availability Zones for high availability. 
 - Containerization Best Practices: By publishing and pushing Docker images, I embraced the portability and flexibility that containers provide, making deployments repeatable and reliable.
+- Immutable Infrastructure: Deploying new versions of your application as immutable Docker images can ensure consistency and reliability across deployments.
 - Extensibility: The pipeline setup is highly adaptable. With minimal adjustments, you can deploy applications to other container orchestration platforms like Kubernetes.
-
 
 
 
 Navigate to [http://localhost:5000/](http://localhost:5000/) on your browser to access the application.
 
 
+
 ![image](https://github.com/user-attachments/assets/bbe78116-4373-4de7-bbf7-9c44bc236fb2)
+
+
+![image](https://github.com/user-attachments/assets/399373fa-cf16-406f-b11d-d1db73317cae)
 
 
 
 ## Architecture diagram
 
-![image](https://github.com/user-attachments/assets/f2ec6095-6ece-4fe2-b24a-44b165db7e64)
+
+![image](https://github.com/user-attachments/assets/6bb1baf0-cf06-49e3-bc3e-6b280fbc0fef)
