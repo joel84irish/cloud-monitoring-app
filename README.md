@@ -100,7 +100,15 @@ Push the Docker image to ECR using the push commands on the console:
 
 ```
 docker push <ecr_repo_uri>:<tag>
+```
 
 ## **Part 4: Deploy application to ECS**
 
+Navigate to [http://localhost:5000/](http://localhost:5000/) on your browser to access the application.
+
 ![image](https://github.com/user-attachments/assets/bbe78116-4373-4de7-bbf7-9c44bc236fb2)
+
+
+## Architecture diagram
+
+![image](https://github.com/user-attachments/assets/f2ec6095-6ece-4fe2-b24a-44b165db7e64)
