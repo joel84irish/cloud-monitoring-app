@@ -8,7 +8,7 @@ module "ecs_app" {
   health_check_path            = "/"
   fargate_cpu                  = "1024"
   fargate_memory               = "2048"
-  aws_region                   = terraform.workspace
+  aws_region                   = us-west-2
   az_count                     = "2"
   subnets                      = module.network.public_subnet_ids
   sg_ecs_tasks                 = [module.security.ecs_tasks_security_group_id]
