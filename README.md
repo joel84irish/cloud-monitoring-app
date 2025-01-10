@@ -14,7 +14,9 @@ incoperated key aspects of modern DevOps practices, including:
 
 
 
-Navigate to [http://localhost:5000/](http://localhost:5000/) on your browser to access the application.
+Navigate to [http://localhost:5000/](http://localhost:5000/) 
+or use the load balancer DNS Name 
+cloud-monitoring-1711878917.us-west-2.elb.amazonaws.com your browser to access the application:
 
 
 
