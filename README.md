@@ -12,13 +12,18 @@ incoperated key aspects of modern DevOps practices, including:
 - Immutable Infrastructure: Deploying new versions of your application as immutable Docker images can ensure consistency and reliability across deployments.
 - Extensibility: The pipeline setup is highly adaptable. With minimal adjustments, you can deploy applications to other container orchestration platforms like Kubernetes.
 
+To run the Docker container, execute the following command:
 
+```
+docker run -p 5000:5000 cloud  
+```
 
 Navigate to [http://localhost:5000/](http://localhost:5000/) 
-or use the load balancer DNS Name 
-cloud-monitoring-1711878917.us-west-2.elb.amazonaws.com your browser to access the application:
+or use the load balancer DNS Name to access the application:
 
-
+```
+cloud-monitoring-1711878917.us-west-2.elb.amazonaws.com 
+```
 
 ![image](https://github.com/user-attachments/assets/bbe78116-4373-4de7-bbf7-9c44bc236fb2)
 
