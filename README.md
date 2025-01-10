@@ -15,7 +15,7 @@ incoperated key aspects of modern DevOps practices, including:
 To run the Docker container, execute the following command:
 
 ```
-docker run -p 5000:5000 cloud  
+python3 app.py 
 ```
 
 Navigate to [http://localhost:5000/](http://localhost:5000/) 
