@@ -1,7 +1,7 @@
 # alb.tf
 
 resource "aws_alb" "main" {
-  name            = "ecs-load-balancer"
+  name            = "cloud-monitoring"
   subnets         = var.subnets
   security_groups = var.lb_security_groups
 }
