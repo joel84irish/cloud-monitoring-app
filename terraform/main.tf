@@ -3,7 +3,7 @@ module "ecs_app" {
   ec2_task_execution_role_name = "EcsTaskExecutionRoleName"
   ecs_auto_scale_role_name     = "EcsAutoScaleRoleName"
   app_image                    = "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app
-  app_port                     = 3000
+  app_port                     = 5000
   app_count                    = 1
   health_check_path            = "/"
   fargate_cpu                  = "1024"
