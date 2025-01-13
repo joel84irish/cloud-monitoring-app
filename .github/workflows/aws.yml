@@ -1,5 +1,6 @@
-# This workflow will build and push a new container image to Amazon ECR,
-# and then will deploy a new task definition and service to Amazon ECS, when there is a push to the "main" branch.
+# This workflow will use Terraform to deploy the AWS serives.
+# Build and push a new container image to Amazon ECR.
+# deploy a new task definition and service to Amazon ECS, when there is a push to the "main" branch.
 
 
 name: Deploy to Amazon ECS Fargate
