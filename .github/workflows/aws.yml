@@ -27,9 +27,9 @@ permissions:
 jobs:
    terraform:
     name: 'Terraform'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
-      environment: us-south-west   
+      environment: us-west-2   
     defaults:
       run:
         working-directory: terraform
@@ -65,7 +65,7 @@ jobs:
    build-and-push:
     needs: terraform
     name: Build and Push
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     # environment: production
 
     steps:
@@ -100,7 +100,7 @@ jobs:
    deploy:
     needs: build-and-push
     name: Deploy
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
   
     steps:
       - name: Configure AWS credentials
