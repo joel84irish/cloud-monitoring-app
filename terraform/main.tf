@@ -3,7 +3,7 @@ provider "aws" {
   region = var.region
 }
 
-resource "aws_ecs_cluster" "cluster" {
+resource "aws_ecs_cluster" "monitor" {
   name = var.ecs_cluster_name
 }
 
