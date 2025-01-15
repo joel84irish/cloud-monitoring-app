@@ -43,11 +43,9 @@ module "remote_backend" {
 }
 
 module "s3" {
-  source = "./modules/s3_img"
-  bucket_name = "joel-bucket-image"
-}group_name    = "/ecs/ecs-app"
-  log_stream_name   = "ecs-log-stream"
-  retention_in_days = 30
+  source            = "./modules/s3_img"
+  bucket_name       = "joel-bucket-image"
+  group_name        = "/ecs/ecs-app"
 }
 
 module "remote_backend" {
