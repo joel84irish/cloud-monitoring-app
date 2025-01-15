@@ -30,4 +30,4 @@ resource "aws_route" "internet_access" {
 }
 
 
-}
+
