@@ -52,7 +52,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_lb" "app_lb" {
-  name               = "${var.app_name}"
+  name               = var.app_name
   internal           = false
   load_balancer_type = "application"
   security_groups    = ["sg-098d8e07dc8df4f85"]
@@ -60,7 +60,7 @@ resource "aws_lb" "app_lb" {
 }
 
 resource "aws_lb_target_group" "app_target_group" {
-  name        = "${var.app_name}"
+  name        = var.app_name
   port        = 5000
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
