@@ -20,3 +20,7 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "subnet_ids" {
+  description = "A list of subnet IDs for the ECS service"
+  type        = list(string)
+  default     = ["subnet-id-1", "subnet-id-2"]
