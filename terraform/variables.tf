@@ -7,17 +7,20 @@ variable "region" {
 
 variable "ecs_cluster_name" {
   description = "The name of the ECS cluster"
-  type        = string
+  type        = string 
+  default     = "cloud_monitor"
 }
 
 variable "app_name" {
   description = "The name of the application"
   type        = string
+  default     = "monitoring"
 }
 
 variable "vpc_id" {
   description = "The ID of the VPC where resources will be created"
   type        = string
+  default     = "vpc-0b723100be1e9fcd8"
 }
 
 variable "subnet_ids" {
