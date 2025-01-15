@@ -1,51 +1,105 @@
-# ecs.tf
-
-module "ecs_app" {
-  source                       = "./modules/ecs"
-  ec2_task_execution_role_name = "EcsTaskExecutionRoleName"
-  ecs_auto_scale_role_name     = "EcsAutoScaleRoleName"
-  app_image                    = "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app"
-  app_port                     = "5000"
-  app_count                    = "1"
-  health_check_path            = "/"
-  fargate_cpu                  = "1024"
-  fargate_memory               = "2048"
-  aws_region                   = "us-west-2"
-  az_count                     = "2"
-  subnets                      = module.network.public_subnet_ids
-  sg_ecs_tasks                 = [module.security.ecs_tasks_security_group_id]
-  vpc_id                       = module.network.vpc_id
-  lb_security_groups           = [module.security.alb_security_group_id]
+terraform {
+  backend "s3" {
+    bucket = "joel-terraform-state-bucket"
+    key    = "ecs/hello-world-app/terraform.tfstate"
+    region = "us-west-2"
+  }
 }
 
-module "network" {
-  source   = "./modules/network"
-  az_count = "2"
+provider "aws" {
+  region = var.region
 }
 
-module "security" {
-  source   = "./modules/security"
-  app_port = 80
-  vpc_id   = module.network.vpc_id
+resource "aws_ecs_cluster" "cluster" {
+  name = var.ecs_cluster_name
 }
 
-module "logs" {
-  source            = "./modules/logs"
-  log_group_name    = "/ecs/ecs-app"
-  log_stream_name   = "ecs-log-stream"
-  retention_in_days = 30
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name = "ecsTaskExecutionRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+  ]
 }
 
-module "remote_backend" {
-  source              = "./modules/backend"
-  bucket_name         = "joel-terraform-state-backend"
-  dynamodb_table_name = "joel-terraform-state-lock-table"
+resource "aws_ecs_task_definition" "task" {
+  family                   = var.app_name
+  network_mode             = "awsvpc"
+  cpu                      = "256"
+  memory                   = "512"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+
+  container_definitions = jsonencode([
+    {
+      name          = var.app_name
+      image         = "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app"
+      essential     = true
+      portMappings  = [
+        {
+          containerPort = 5000
+          hostPort      = 5000
+        }
+      ]
+    }
+  ])
 }
 
-module "s3" {
-  source            = "./modules/s3_img"
-  bucket_name       = "joel-bucket-image"
+resource "aws_ecs_service" "service" {
+  name            = var.app_name
+  cluster         = aws_ecs_cluster.cluster.id
+  task_definition = aws_ecs_task_definition.task.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets         = var.subnet_ids
+    assign_public_ip = true
+    security_groups = ["sg-098d8e07dc8df4f85"]
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app_target_group.arn
+    container_name   = var.app_name
+    container_port   = 3000
+  }
 }
 
+resource "aws_lb" "app_lb" {
+  name               = "${var.app_name}-lb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = ["sg-098d8e07dc8df4f85"]
+  subnets            = var.subnet_ids
+}
 
+resource "aws_lb_target_group" "app_target_group" {
+  name        = "${var.app_name}-tg"
+  port        = 5000
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+}
+
+resource "aws_lb_listener" "app_listener" {
+  load_balancer_arn = aws_lb.app_lb.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app_target_group.arn
+  }
+}
 
