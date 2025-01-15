@@ -45,7 +45,6 @@ module "remote_backend" {
 module "s3" {
   source            = "./modules/s3_img"
   bucket_name       = "joel-bucket-image"
-  group_name        = "/ecs/ecs-app"
 }
 
 
