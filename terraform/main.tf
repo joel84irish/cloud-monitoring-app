@@ -9,7 +9,7 @@ resource "aws_ecs_cluster" "cluster" {
 
 
 resource "aws_ecs_task_definition" "task" {
-  family                   = var.app_name
+  family                   = "monitoring_definition"
   network_mode             = "awsvpc"
   cpu                      = "256"
   memory                   = "512"
@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "task" {
 
 
 resource "aws_ecs_service" "service" {
-  name            = var.app_name
+  name            = "monitor_service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 1
@@ -52,7 +52,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_lb" "app_lb" {
-  name               = var.app_name
+  name               = "monitor"
   internal           = false
   load_balancer_type = "application"
   security_groups    = ["sg-098d8e07dc8df4f85"]
@@ -60,7 +60,7 @@ resource "aws_lb" "app_lb" {
 }
 
 resource "aws_lb_target_group" "app_target_group" {
-  name        = var.app_name
+  name        = "m1"
   port        = 5000
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
