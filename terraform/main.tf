@@ -7,25 +7,6 @@ resource "aws_ecs_cluster" "cluster" {
   name = var.ecs_cluster_name
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecsTaskExecutionRole"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-  ]
-}
 
 resource "aws_ecs_task_definition" "task" {
   family                   = var.app_name
@@ -49,6 +30,15 @@ resource "aws_ecs_task_definition" "task" {
   ])
 }
 
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+resource "aws_iam_role_policy_attachment" "task" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 resource "aws_ecs_service" "service" {
   name            = var.app_name
   cluster         = aws_ecs_cluster.cluster.id
@@ -65,7 +55,7 @@ resource "aws_ecs_service" "service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.app_target_group.arn
     container_name   = var.app_name
-    container_port   = 3000
+    container_port   = 5000
   }
 }
 
