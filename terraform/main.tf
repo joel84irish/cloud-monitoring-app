@@ -1,9 +1,13 @@
-terraform {
-  backend "s3" {
-    bucket = "joel-terraform-state-bucket"
-    key    = "ecs/hello-world-app/terraform.tfstate"
-    region = "us-west-2"
-  }
+
+module "remote_backend" {
+  source              = "./modules/backend"
+  bucket_name         = "joel-terraform-state-backend"
+  dynamodb_table_name = "joel-terraform-state-lock-table"
+}
+
+module "s3" {
+  source            = "./modules/s3_img"
+  bucket_name       = "joel-bucket-image"
 }
 
 provider "aws" {
