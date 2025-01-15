@@ -30,14 +30,6 @@ resource "aws_ecs_task_definition" "task" {
   ])
 }
 
-resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-resource "aws_iam_role_policy_attachment" "task" {
-  role       = aws_iam_role.ecs_task_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-}
 
 resource "aws_ecs_service" "service" {
   name            = var.app_name
