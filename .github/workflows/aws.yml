@@ -11,14 +11,14 @@ on:
       - main
 
 env:
-  AWS_REGION: us-west-2                 # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: app           # set this to your Amazon ECR repository name
-  ECS_SERVICE: service               # set this to your Amazon ECS service name
-  ECS_CLUSTER: TERRAFORM_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ECS_TASK_DEFINITION_APP # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: app          # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
+  AWS_REGION: us-west-2                       # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: cloud-monitoring-app        # set this to your Amazon ECR repository name
+  ECS_SERVICE: main                           # set this to your Amazon ECS service name
+  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: app                    # set this to the path to your Amazon ECS task definition
+                                              # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: app                         # set this to the name of the container in the
+                                              # containerDefinitions section of your task definition
   
   
 permissions:
@@ -88,7 +88,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: latest
-        REPOSITORY: app
+        REPOSITORY: cloud-monitoring-app
       run: |
           # Build a docker container and
           # push it to ECR so that it can
