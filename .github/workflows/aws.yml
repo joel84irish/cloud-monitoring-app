@@ -92,16 +92,17 @@ build-and-push:
           echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT    
           
 deploy:
-    name: Deploy
     needs: build-and-push
+    name: Deploy
     runs-on: ubuntu-latest
+  
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}      
+          aws-region: ${{ env.AWS_REGION }}     
         
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def-1
