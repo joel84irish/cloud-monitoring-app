@@ -1,6 +1,10 @@
 
+resource "aws_ecs_cluster" "ecs" {
+  name = "ecs_cluster"
+}
+
 resource "aws_ecs_task_definition" "task" {
-  family                   = "monitoring_definition"
+  family                   = "Monitoring"
   network_mode             = "awsvpc"
   cpu                      = "256"
   memory                   = "512"
@@ -9,7 +13,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     {
       name          = var.app_name
-      image         = "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app"
+      image         = "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app:latest"
       essential     = true
       portMappings  = [
         {
@@ -24,7 +28,7 @@ resource "aws_ecs_task_definition" "task" {
 
 resource "aws_ecs_service" "service" {
   name            = "monitoring_service"
-  cluster         = aws_ecs_cluster.cluster.id
+  cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 2
   launch_type     = "FARGATE"
