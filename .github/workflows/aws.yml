@@ -24,9 +24,7 @@ permissions:
 jobs:
    terraform:
     name: 'Terraform'
-    runs-on: ubuntu-latest
-    env:
-      environment: us-west-2   
+    runs-on: ubuntu-latest   
     defaults:
       run:
         working-directory: terraform
