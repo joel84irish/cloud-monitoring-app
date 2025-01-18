@@ -58,7 +58,7 @@ jobs:
         run: terraform apply -auto-approve 
 
 build-and-push:
-    name: Build and Push
+    name: build-and-push
     needs: terraform    
     runs-on: ubuntu-latest
     environment: dev
@@ -120,6 +120,7 @@ deploy:
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true   
+     
    
    
 
