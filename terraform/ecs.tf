@@ -1,6 +1,6 @@
 
 resource "aws_ecs_cluster" "ecs" {
-  name = "ecs_cluster"
+  name = var.ecs_cluster_name
 }
 
 resource "aws_ecs_task_definition" "task" {
