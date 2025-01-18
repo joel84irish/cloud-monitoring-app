@@ -12,6 +12,7 @@ on:
 
 env:
   AWS_REGION: us-east-2
+  ECR_REPOSITORY: ecs-monitoring-app
   ECS_CLUSTER: cloud_monitor
   CONTAINER_NAME: monitoring
   ECS_SERVICE: monitoring_service
@@ -59,8 +60,8 @@ jobs:
         run: terraform apply -auto-approve 
 
 build-and-push:
-    needs: terraform
     name: Build and Push
+    needs: terraform    
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -81,19 +82,20 @@ build-and-push:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          ECR_REGISTRY: "***.dkr.ecr.us-east-2.amazonaws.com"
-          ECR_REPOSITORY: "app_repo"
-          IMAGE_TAG: latest
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: latest
+        REPOSITORY: app
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-          
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT    
 deploy:
-    needs: build-and-push
     name: Deploy
-    uns-on: ubuntu-latest
-  
+    needs: build-and-push
+    runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
