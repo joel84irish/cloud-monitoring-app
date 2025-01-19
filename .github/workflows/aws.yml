@@ -56,10 +56,9 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/feature' && github.event_name == 'push'
         run: terraform apply -auto-approve 
-
-build-and-push:
-    name: build-and-push
-    needs: terraform    
+   build-and-push:
+    needs: terraform 
+    name: build-and-push   
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -79,7 +78,7 @@ build-and-push:
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
-        env:
+    env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: latest
         REPOSITORY: app
@@ -91,11 +90,10 @@ build-and-push:
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT    
           
-deploy:
+   deploy:
     needs: build-and-push
     name: Deploy
     runs-on: ubuntu-latest
-  
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -108,7 +106,7 @@ deploy:
         id: task-def-1
         uses: aws-actions/amazon-ecs-render-task-definition@v1
       
-        with:
+    with:
         task-definition: ${{ env.ECS_TD }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
