@@ -12,7 +12,26 @@ incoperated key aspects of modern DevOps practices, including:
 - Immutable Infrastructure: Deploying new versions of your application as immutable Docker images can ensure consistency and reliability across deployments.
 - Extensibility: The pipeline setup is highly adaptable. With minimal adjustments, you can deploy applications to other container orchestration platforms like Kubernetes.
 
-To run the Docker container, execute the following command:
+## Create cluster
+```
+eksctl create cluster --name=Metrics-cluster --region=us-west-2 --node-type=t3.medium --nodes-min=2 --nodes-max=2 --managed --spot
+```
+## Create Node group
+```
+eksctl create nodegroup --cluster=Metrics-cluster --name=my-nodegroup --instance-type=t3.medium --nodes=2
+```
+
+## The kubeconfig file stores the connection details for your Kubernetes clusters, including the API server address, authentication information, and certificates. kubectl uses this file to know how to communicate with your cluster.
+## Contexts: A context is a set of access parameters. It contains a cluster, a user, and a namespace. You can have multiple contexts in your kubeconfig file, allowing you to easily switch between different clusters.
+## kubectl correctly and connect to your EKS cluster
+
+```
+kubectl config get-contexts
+```
+```
+kubectl config use-context arn:aws:eks:us-west-2:123456789012:cluster/Metrics-cluster/abcdef01-2345-6789-abcd-ef0123456789  
+```
+
 
 ```
 python3 app.py 
