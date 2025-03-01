@@ -1,13 +1,13 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:eu-west-2:489877524855:task-definition/tm:2",
+    "taskDefinitionArn": "arn:aws:ecs:us-west-2:766261352911:task-definition/MonitoringMetric:4",
     "containerDefinitions": [
         {
-            "name": "tmc",
-            "image": "489877524855.dkr.ecr.eu-west-2.amazonaws.com/walid-sandbox:latest",
+            "name": "Monitoring",
+            "image": "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app:latest",
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "tmc-3000-tcp",
+                    "name": "monitoring-3000-tcp",
                     "containerPort": 3000,
                     "hostPort": 3000,
                     "protocol": "tcp",
@@ -23,11 +23,11 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/tm",
+                    "awslogs-group": "/ecs/MonitoringMetric",
                     "mode": "non-blocking",
                     "awslogs-create-group": "true",
                     "max-buffer-size": "25m",
-                    "awslogs-region": "eu-west-2",
+                    "awslogs-region": "us-west-2",
                     "awslogs-stream-prefix": "ecs"
                 },
                 "secretOptions": []
@@ -35,11 +35,11 @@
             "systemControls": []
         }
     ],
-    "family": "tm",
-    "taskRoleArn": "arn:aws:iam::489877524855:role/ecsTaskExecutionRole",
-    "executionRoleArn": "arn:aws:iam::489877524855:role/ecsTaskExecutionRole",
+    "family": "MonitoringMetric",
+    "taskRoleArn": "arn:aws:iam::766261352911:role/ecsTaskRole",
+    "executionRoleArn": "arn:aws:iam::766261352911:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 2,
+    "revision": 4,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -88,7 +88,8 @@
         "cpuArchitecture": "ARM64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-09-13T18:23:22.476Z",
-    "registeredBy": "arn:aws:iam::489877524855:user/walid-test-threat-modeler",
+    "registeredAt": "2025-01-17T01:09:59.896Z",
+    "registeredBy": "arn:aws:iam::766261352911:user/Terraform-Project",
+    "enableFaultInjection": false,
     "tags": []
 }
