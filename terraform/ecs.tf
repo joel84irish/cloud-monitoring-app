@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "tm_task" {
   container_definitions = jsonencode([
     {
       name      = "tmc"
-      image     = "010928194025.dkr.ecr.eu-west-2.amazonaws.com/tm:latest"
+      image     = "766261352911.dkr.ecr.us-west-2.amazonaws.com/cloud-monitoring-app:latest"
       cpu       = 0
       essential = true
       portMappings = [{
